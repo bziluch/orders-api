@@ -28,6 +28,17 @@ class Order
     #[Groups('order')]
     private Collection $orderedProducts;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Groups('order')]
+    private ?string $priceNetto = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $priceVat = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Groups('order')]
+    private ?string $priceBrutto = null;
+
     public function __construct()
     {
         $this->orderedProducts = new ArrayCollection();
@@ -77,6 +88,42 @@ class Order
                 $orderedProduct->setOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPriceNetto(): ?string
+    {
+        return $this->priceNetto;
+    }
+
+    public function setPriceNetto(?string $priceNetto): static
+    {
+        $this->priceNetto = $priceNetto;
+
+        return $this;
+    }
+
+    public function getPriceVat(): ?string
+    {
+        return $this->priceVat;
+    }
+
+    public function setPriceVat(?string $priceVat): static
+    {
+        $this->priceVat = $priceVat;
+
+        return $this;
+    }
+
+    public function getPriceBrutto(): ?string
+    {
+        return $this->priceBrutto;
+    }
+
+    public function setPriceBrutto(?string $priceBrutto): static
+    {
+        $this->priceBrutto = $priceBrutto;
 
         return $this;
     }

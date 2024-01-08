@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\OrderedProduct;
 use App\Repository\ProductRepository;
+use App\Service\OrderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,6 +20,7 @@ class OrderController extends AbstractController
     #[Route('/', name: 'new', methods:['post'] )]
     public function new(
         ProductRepository $productRepository,
+        OrderService $orderService,
         EntityManagerInterface $entityManager,
         SerializerInterface $serializer,
         Request $request
@@ -53,6 +55,7 @@ class OrderController extends AbstractController
             $order->addOrderedProduct($orderedProduct);
         }
         $entityManager->persist($order);
+        $orderService->setOrderPrices($order);
         $entityManager->flush();
 
         return new JsonResponse([

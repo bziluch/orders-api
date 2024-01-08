@@ -27,11 +27,13 @@ final class Version20240108192317 extends AbstractMigration
         $this->addSql('ALTER TABLE ordered_product ADD product_id INT NOT NULL');
         $this->addSql('ALTER TABLE ordered_product ADD CONSTRAINT FK_E6F097B64584665A FOREIGN KEY (product_id) REFERENCES product (id)');
         $this->addSql('CREATE INDEX IDX_E6F097B64584665A ON ordered_product (product_id)');
+        $this->addSql('ALTER TABLE `order` ADD price_netto NUMERIC(10, 2) DEFAULT NULL, ADD price_vat NUMERIC(10, 2) DEFAULT NULL, ADD price_brutto NUMERIC(10, 2) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE `order` DROP price_netto, DROP price_vat, DROP price_brutto');
         $this->addSql('ALTER TABLE ordered_product DROP FOREIGN KEY FK_E6F097B64584665A');
         $this->addSql('DROP INDEX IDX_E6F097B64584665A ON ordered_product');
         $this->addSql('ALTER TABLE ordered_product DROP product_id');
