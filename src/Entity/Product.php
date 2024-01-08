@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -15,10 +16,12 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('order')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $priceBrutto = null;
+    #[Groups('order')]
+    private ?string $priceNetto = null;
 
     public function getId(): ?int
     {
@@ -37,14 +40,14 @@ class Product
         return $this;
     }
 
-    public function getPriceBrutto(): ?string
+    public function getPriceNetto(): ?string
     {
-        return $this->priceBrutto;
+        return $this->priceNetto;
     }
 
-    public function setPriceBrutto(string $priceBrutto): static
+    public function setPriceNetto(string $priceNetto): static
     {
-        $this->priceBrutto = $priceBrutto;
+        $this->priceNetto = $priceNetto;
 
         return $this;
     }

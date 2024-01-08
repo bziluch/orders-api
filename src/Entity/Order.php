@@ -7,25 +7,31 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
+//#[Groups('order')]
 class Order
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('order')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups('order')]
     private ?\DateTimeInterface $orderDate = null;
 
-    #[ORM\OneToMany(mappedBy: 'order_', targetEntity: OrderedProduct::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'order_', targetEntity: OrderedProduct::class, cascade:['persist'], orphanRemoval: true)]
+    #[Groups('order')]
     private Collection $orderedProducts;
 
     public function __construct()
     {
         $this->orderedProducts = new ArrayCollection();
+        $this->setOrderDate(new \DateTime('now'));
     }
 
     public function getId(): ?int
